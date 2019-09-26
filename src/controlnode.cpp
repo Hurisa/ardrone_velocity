@@ -6,14 +6,14 @@ ControlNode::ControlNode() {
   // Topic Parameters
   std::string s;
 
-  params.param<std::string>("cmd_vel_ref_topic", s, "/cmd_vel_ref");
+  params.param<std::string>("cmd_vel_ref_topic", s, "cmd_vel_ref");
   m_cmd_vel_sub = nh.subscribe(s, 1, &ControlNode::cmd_velCallback, this);
 
-  params.param<std::string>("odometry_topic", s, "/ardrone/odometry");
+  params.param<std::string>("odometry_topic", s, "ardrone/odometry");
   m_quad_vel_sub = nh.subscribe(s, 1, &ControlNode::quad_odom_callback, this,
                                 ros::TransportHints().tcpNoDelay());
 
-  params.param<std::string>("cmd_vel_out_topic", s, "/cmd_vel");
+  params.param<std::string>("cmd_vel_out_topic", s, "cmd_vel");
   m_cmd_vel_pub = nh.advertise<geometry_msgs::Twist>(s, 1);
 
   // Dynamic parameter reconfigure
@@ -22,7 +22,7 @@ ControlNode::ControlNode() {
   f = boost::bind(&ControlNode::dynamic_reconfigure_callback, this, _1, _2);
   m_server.setCallback(f);
 
-  m_debug_pub = nh.advertise<std_msgs::Float64>("/ardrone_velocity/debug", 1);
+  m_debug_pub = nh.advertise<std_msgs::Float64>("ardrone_velocity/debug", 1);
   m_i_term_x = 0.0;
   m_i_term_y = 0.0;
 }
